@@ -12,4 +12,7 @@ services:
     build: .
     ports:
       - 9092:9092
+      - 8778:8778
+    environment:
+      KAFKA_OPTS: -javaagent:/usr/jolokia/agents/jolokia-jvm.jar=host=0.0.0.0
     depends_on: [zookeeper]
