@@ -32,7 +32,7 @@ RUN curl -sL --retry 3 \
  && rm -rf $JOLOKIA_HOME/reference
 
 # KAFKA
-ENV KAFKA_VERSION 0.10.0.1
+ENV KAFKA_VERSION 0.10.1.0
 ENV KAFKA_HOME /usr/kafka_2.11-${KAFKA_VERSION}
 RUN curl -sL --retry 3 \
   "http://www.us.apache.org/dist/kafka/${KAFKA_VERSION}/kafka_2.11-${KAFKA_VERSION}.tgz" \
