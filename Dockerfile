@@ -7,10 +7,9 @@ RUN apt-get update \
 
 # JAVA
 ENV JAVA_MAJOR_VERSION 8
-ENV JAVA_UPDATE_VERSION 102
-ENV JAVA_BUILD_NUMBER 14
+ENV JAVA_UPDATE_VERSION 112
+ENV JAVA_BUILD_NUMBER 15
 ENV JAVA_HOME /usr/jdk1.${JAVA_MAJOR_VERSION}.0_${JAVA_UPDATE_VERSION}
-
 ENV PATH $PATH:$JAVA_HOME/bin
 RUN curl -sL --retry 3 --insecure \
   --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
