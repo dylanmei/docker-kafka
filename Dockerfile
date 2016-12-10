@@ -40,11 +40,7 @@ RUN curl -sL --retry 3 \
  && chown -R root:root $KAFKA_HOME \
  && mv $KAFKA_HOME/config /etc/kafka \
  && ln -s /etc/kafka $KAFKA_HOME/config \
- && cp /etc/kafka/server.properties /etc/kafka/server.properties.original \
- && sed -i -r "/#advertised.listeners/s/#//g" /etc/kafka/server.properties \
- && sed -i -r "s/(advertised.listeners)=(.*)/\1=PLAINTEXT:\/\/localhost:9092/g" /etc/kafka/server.properties \
- && sed -i -r "s/(zookeeper.connect)=(.*)/\1=zookeeper:2181/g" /etc/kafka/server.properties \
  && rm -rf $KAFKA_HOME/site-docs
 
 WORKDIR $KAFKA_HOME
-CMD bin/kafka-server-start.sh config/server.properties
+CMD ["bin/kafka-server-start.sh", "config/server.properties", "--override", "advertised.listeners=PLAINTEXT://localhost:9092", "--override", "zookeeper.connect=zookeeper:2181"]
