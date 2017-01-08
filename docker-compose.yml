@@ -7,12 +7,22 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
     ports:
       - 2181:2181
+    logging:
+      driver: none
 
-  broker:
+  kafka-broker:
     build: .
+    #image: dylanmei/kafka:0.10.1.0
     ports:
       - 9092:9092
       - 8778:8778
     environment:
       KAFKA_OPTS: -javaagent:/usr/jolokia/agents/jolokia-jvm.jar=host=0.0.0.0
+      KAFKA_HEAP_OPTS: -Xmx1G -Xms1G
+      KAFKA_JVM_PERFORMANCE_OPTS: -server -XX:+UseG1GC -XX:MaxGCPauseMillis=25 -XX:InitiatingHeapOccupancyPercent=35 -XX:+DisableExplicitGC -Djava.awt.headless=true
     depends_on: [zookeeper]
+
+  telegraf:
+    image: telegraf:1.1
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf

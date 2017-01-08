@@ -1,15 +1,34 @@
 docker-kafka
 ------------
 
-A basic Kafka setup with Docker, without any `ENV` mappings. Bring your own `server.properties` file!
+A basic Kafka+Jolokia setup with Docker, without any `ENV` mappings. Bring your own `server.properties` file!
 
 ## usage
 
 Using Docker Compose:
 
 ```
-docker-compose up
-kafkacat -L -b localhost:9092
+% docker-compose up
+% kafkacat -L -b localhost:9092
+% echo "hello" | kafkacat -P -b localhost:9092 -t hello-logs
+% kafkacat -C -b localhost:9092 -t hello-logs
+```
+
+## jolokia
+
+Use the [Jolokia API](https://jolokia.org/reference/html/protocol.html) endpoint to query for metrics. Example:
+
+```
+% curl -s http://localhost:8778/jolokia/search/java.lang:type=* | jq '.'
+% curl -s http://localhost:8778/jolokia/read/java.lang:type=ClassLoading | jq '.'
+```
+
+[J4PSH](https://github.com/rhuss/jmx4perl) is another way to explore Jolokia. Example:
+
+```
+% docker run --rm -it \
+  --network=dockerkafka_default \
+  jolokia/jmx4perl j4psh --color=no http://kafka-broker:8778/jolokia
 ```
 
 To use your own `server.properties` file, run something like:
