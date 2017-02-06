@@ -22,7 +22,13 @@ services:
       KAFKA_JVM_PERFORMANCE_OPTS: -server -XX:+UseG1GC -XX:MaxGCPauseMillis=25 -XX:InitiatingHeapOccupancyPercent=35 -XX:+DisableExplicitGC -Djava.awt.headless=true
     depends_on: [zookeeper]
 
+  # Jolokia2 input is based on this PR:
+  # https://github.com/influxdata/telegraf/pull/2278
   telegraf:
-    image: telegraf:1.1
+    image: quay.io/nordstrom/telegraf:1.2
+    environment:
+      JOLOKIA_ADDR: "kafka-broker:8778"
+      http_proxy: ""
+      https_proxy: ""
     volumes:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf
